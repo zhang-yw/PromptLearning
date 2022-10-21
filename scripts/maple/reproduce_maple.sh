@@ -3,7 +3,7 @@
 #cd ../..
 
 # custom config
-DATA="/path/to/dataset/folder"
+DATA="/nobackup3/yiwei/data/"
 TRAINER=MaPLe
 
 DATASET=$1
