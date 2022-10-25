@@ -13,7 +13,7 @@ CFG=vit_b16_c2_ep5_batch4_4
 SHOTS=16
 
 
-DIR=output/evaluation/${TRAINER}/${CFG}_${SHOTS}shots/${DATASET}/seed${SEED}
+DIR=/nobackup3/yiwei/output/output/evaluation/${TRAINER}/${CFG}_${SHOTS}shots/${DATASET}/seed${SEED}
 if [ -d "$DIR" ]; then
     echo "Results are available in ${DIR}. Skip this job"
 else

@@ -16,7 +16,7 @@ LOADEP=2
 
 MODEL_DIR=${WEIGHTSPATH}/seed${SEED}
 
-DIR=output/evaluation/${TRAINER}/${CFG}_${SHOTS}shots/${DATASET}/seed${SEED}
+DIR=/nobackup3/yiwei/output/evaluation/${TRAINER}/${CFG}_${SHOTS}shots/${DATASET}/seed${SEED}
 if [ -d "$DIR" ]; then
     echo "Results are already available in ${DIR}. Skipping..."
 else

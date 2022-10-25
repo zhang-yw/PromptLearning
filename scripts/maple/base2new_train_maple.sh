@@ -13,7 +13,7 @@ CFG=vit_b16_c2_ep5_batch4_2ctx
 SHOTS=16
 
 
-DIR=output/base2new/train_base/${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/seed${SEED}
+DIR=/nobackup3/yiwei/output/base2new/train_base/${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/seed${SEED}
 if [ -d "$DIR" ]; then
     echo "Results are available in ${DIR}. Resuming..."
     python train.py \

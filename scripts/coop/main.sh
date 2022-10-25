@@ -15,7 +15,7 @@ CSC=$6  # class-specific context (False or True)
 
 for SEED in 1 2 3
 do
-    DIR=output/${DATASET}/${TRAINER}/${CFG}_${SHOTS}shots/nctx${NCTX}_csc${CSC}_ctp${CTP}/seed${SEED}
+    DIR=/nobackup3/yiwei/output/${DATASET}/${TRAINER}/${CFG}_${SHOTS}shots/nctx${NCTX}_csc${CSC}_ctp${CTP}/seed${SEED}
     if [ -d "$DIR" ]; then
         echo "Results are available in ${DIR}. Skip this job"
     else
