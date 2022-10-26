@@ -174,6 +174,7 @@ class CustomCLIP(nn.Module):
         logits = logit_scale * image_features @ text_features.t()
         print(image.shape)
         print(label.shape)
+        print(label)
         print(logits.shape)
         print(logits)
         exit(0)
