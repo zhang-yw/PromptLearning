@@ -16,8 +16,8 @@ SUB=new
 
 
 COMMON_DIR=${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/seed${SEED}
-MODEL_DIR=/nobackup3/yiwei/output/base2new/train_base/${COMMON_DIR}
-DIR=/nobackup3/yiwei/output/base2new/test_${SUB}/${COMMON_DIR}
+MODEL_DIR=/nobackup3/yiwei/output_minmax/base2new/train_base/${COMMON_DIR}
+DIR=/nobackup3/yiwei/output_minmax/base2new/test_${SUB}/${COMMON_DIR}
 if [ -d "$DIR" ]; then
     echo "Evaluating model"
     echo "Results are available in ${DIR}. Resuming..."

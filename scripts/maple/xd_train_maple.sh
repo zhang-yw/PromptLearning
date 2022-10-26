@@ -13,7 +13,7 @@ CFG=vit_b16_c2_ep5_batch4_2ctx_cross_datasets
 SHOTS=16
 
 
-DIR=/nobackup3/yiwei/output/${DATASET}/${TRAINER}/${CFG}_${SHOTS}shots/seed${SEED}
+DIR=/nobackup3/yiwei/output_minmax/${DATASET}/${TRAINER}/${CFG}_${SHOTS}shots/seed${SEED}
 if [ -d "$DIR" ]; then
     echo "Results are available in ${DIR}."
 else
