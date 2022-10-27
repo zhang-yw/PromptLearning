@@ -228,6 +228,9 @@ if __name__ == "__main__":
         "--no-train", action="store_true", help="do not call trainer.train()"
     )
     parser.add_argument(
+        "--text-weight", type=float, help="weight of text losses"
+    )
+    parser.add_argument(
         "opts",
         default=None,
         nargs=argparse.REMAINDER,
