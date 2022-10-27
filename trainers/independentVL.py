@@ -172,17 +172,24 @@ class CustomCLIP(nn.Module):
         image_features = image_features / image_features.norm(dim=-1, keepdim=True)
         text_features = text_features / text_features.norm(dim=-1, keepdim=True)
         logits = logit_scale * image_features @ text_features.t()
-        print(text_features.shape)
-        print(image_features.shape)
-        print(image.shape)
-        print(label.shape)
-        print(label)
-        print(logits.shape)
-        print(logits)
-        exit(0)
+
+        logits_text = logit_scale * text_features @ text_features.t()
+        label_text = torch.arange(text_features.shape[0])
+        # print(text_features.shape)
+        # print(image_features.shape)
+        # print(image.shape)
+        # print(label.shape)
+        # print(label)
+        # print(logits.shape)
+        # print(logits)
+        # exit(0)
 
         if self.prompt_learner.training:
-            return F.cross_entropy(logits, label)
+            losses = {
+                "loss_ce": F.cross_entropy(logits, label),
+                "loss_text": F.cross_entropy(logits_text, label_text),
+            }
+            return losses
 
         return logits
 
@@ -235,6 +242,8 @@ class IVLP(TrainerX):
 
         self.scaler = GradScaler() if cfg.TRAINER.IVLP.PREC == "amp" else None
 
+        self.weight_dict = {'loss_ce': 1, 'loss_text': cfg.TEXT_WEIGHT}
+
         # Note that multi-gpu training could be slow because CLIP's size is
         # big, which slows down the copy operation in DataParallel
         device_count = torch.cuda.device_count()
@@ -258,12 +267,13 @@ class IVLP(TrainerX):
             scaler.step(optim)
             scaler.update()
         else:
-            loss = model(image, label)
+            loss_dict = model(image, label)
+            losses = sum(loss_dict[k] * self.weight_dict[k] for k in loss_dict.keys() if k in self.weight_dict)
             optim.zero_grad()
             loss.backward()
             optim.step()
 
-        loss_summary = {"loss": loss.item()}
+        loss_summary = {"loss_ce": loss_dict['loss_ce'].item(), "loss_text": loss_dict['loss_text'].item()}
 
         if (self.batch_idx + 1) == self.num_batches:
             self.update_lr()

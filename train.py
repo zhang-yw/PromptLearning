@@ -74,6 +74,9 @@ def reset_cfg(cfg, args):
 
     if args.head:
         cfg.MODEL.HEAD.NAME = args.head
+    
+    if args.text_weight:
+        cfg.TEXT_WEIGHT = args.text_weight
 
 
 def extend_cfg(cfg):
