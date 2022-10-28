@@ -299,7 +299,7 @@ class IVLP(TrainerX):
             loss_dict = model(image, label)
             losses = sum(loss_dict[k] * self.weight_dict[k] for k in loss_dict.keys() if k in self.weight_dict)
             optim.zero_grad()
-            loss.backward()
+            losses.backward()
             optim.step()
 
         loss_summary = {"loss_ce": loss_dict['loss_ce'].item(), "loss_text": loss_dict['loss_text'].item()}
