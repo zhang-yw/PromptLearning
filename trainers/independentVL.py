@@ -38,6 +38,32 @@ def load_clip_to_cpu(cfg):
 
     return model
 
+class OrthogonalProjectionLoss(nn.Module):
+    def __init__(self, gamma=0.5):
+        super(OrthogonalProjectionLoss, self).__init__()
+        self.gamma = gamma
+
+    def forward(self, features, labels=None):
+        device = (torch.device('cuda') if features.is_cuda else torch.device('cpu'))
+
+        #  features are already normalized
+        # features = F.normalize(features, p=2, dim=1)
+
+        labels = labels[:, None]  # extend dim
+
+        mask = torch.eq(labels, labels.t()).bool().to(device)
+        eye = torch.eye(mask.shape[0], mask.shape[1]).bool().to(device)
+
+        mask_pos = mask.masked_fill(eye, 0).float()
+        mask_neg = (~mask).float()
+        dot_prod = torch.matmul(features, features.t())
+
+        pos_pairs_mean = (mask_pos * dot_prod).sum() / (mask_pos.sum() + 1e-6)
+        neg_pairs_mean = (mask_neg * dot_prod).sum() / (mask_neg.sum() + 1e-6)  # TODO: removed abs
+
+        loss = (1.0 - pos_pairs_mean) + self.gamma * neg_pairs_mean
+
+        return loss
 
 class TextEncoder(nn.Module):
     def __init__(self, clip_model):
@@ -173,8 +199,10 @@ class CustomCLIP(nn.Module):
         text_features = text_features / text_features.norm(dim=-1, keepdim=True)
         logits = logit_scale * image_features @ text_features.t()
 
-        logits_text = logit_scale * text_features @ text_features.t()
+        # logits_text = logit_scale * text_features @ text_features.t()
+        # label_text = torch.arange(text_features.shape[0])
         label_text = torch.arange(text_features.shape[0])
+
         # print(text_features.shape)
         # print(image_features.shape)
         # print(image.shape)
@@ -187,7 +215,7 @@ class CustomCLIP(nn.Module):
         if self.prompt_learner.training:
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
-                "loss_text": F.cross_entropy(logits_text, label_text),
+                "loss_text": OrthogonalProjectionLoss(text_features, label_text),
             }
             return losses
 
