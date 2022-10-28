@@ -188,7 +188,7 @@ class CustomCLIP(nn.Module):
         self.text_encoder = TextEncoder(clip_model)
         self.logit_scale = clip_model.logit_scale
         self.dtype = clip_model.dtype
-        self.op_loss = OrthogonalProjectionLoss(gamma=0.0)
+        self.op_loss = OrthogonalProjectionLoss(gamma=0.5) 
         # self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=256, miner=miners.MultiSimilarityMiner(epsilon=0.1))
         # self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=256, miner=miners.MultiSimilarityMiner(epsilon=0.1))
 
@@ -222,7 +222,7 @@ class CustomCLIP(nn.Module):
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
                 "loss_text": self.op_loss(text_features, label_text),
-                "loss_visual": self.op_loss(image_features, label)
+                "loss_visual": self.op_loss(image_features, label),
             }
             return losses
 
