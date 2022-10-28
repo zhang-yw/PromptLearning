@@ -222,7 +222,7 @@ class CustomCLIP(nn.Module):
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
                 "loss_text": self.op_loss(text_features, label_text),
-                "loss_visual": self.cross_batch_memory_loss(image_features, enqueue_idx=enqueue_idx)
+                "loss_visual": self.cross_batch_memory_loss(image_features, label, enqueue_idx=enqueue_idx)
             }
             return losses
 
