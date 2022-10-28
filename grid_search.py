@@ -3,6 +3,8 @@ import torch
 import wandb
 wandb.login()
 import yaml
+import os
+import uuid
 
 from dassl.utils import setup_logger, set_random_seed, collect_env_info
 from dassl.config import get_cfg_default
@@ -165,9 +167,24 @@ def main(args):
     with open('./config.yaml') as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
     wandb.init(config=config, sync_tensorboard=True)
-    
+    os.environ["WANDB_DIR"] = os.path.abspath("/nobackup3/yiwei/wandb")
+
+    args.root = wandb.config.root
+    args.seed = wandb.config.seed
+    args.trainer = wandb.config.trainer
+    args.config_file = wandb.config.config_file 
+    args.dataset_config_file = wandb.config.dataset_config_file
+    args.output_dir = os.path.join(wandb.config.output_dir, uuid.uuid4().hex)
+    args.text_weight = wandb.config.text_weight 
+    args.visual_weight = wandb.config.visual_weight 
 
     cfg = setup_cfg(args)
+
+    cfg.DATALOADER.N_INS = wandb.config.n_ins
+    cfg.DATALOADER.BATCH_SIZE = wandb.config.batch_size
+    cfg.OPTIM.LR = wandb.config.lr
+    cfg.OPTIM.MAX_EPOCH = wandb.config.epochs
+
     if cfg.SEED >= 0:
         print("Setting fixed seed: {}".format(cfg.SEED))
         set_random_seed(cfg.SEED)

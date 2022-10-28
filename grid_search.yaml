@@ -4,12 +4,48 @@ method: random
 name: sweep
 metric:
   goal: maximize
-  name: val_acc
+  name: accuracy
 parameters:
+  root: 
+    value: "/nobackup3/yiwei/data/"
+  seed:
+    value: 1
+  trainer:
+    value: IVLP
+  config_file:
+    value: "configs/trainers/IVLP/vit_b16_c2_ep10_batch8_4+4ctx.yaml"
+  output_dir:
+    value: "/nobackup3/yiwei/wandb/grid_search"
+  dataset_config_file:
+    distribution: categorical
+    value: 
+    - "configs/datasets/caltech101.yaml"
+    - "configs/datasets/dtd.yaml"
+    - "configs/datasets/eurosat.yaml"
+    - "configs/datasets/fgvc_aircraft.yaml"
+    - "configs/datasets/food101.yaml"
+    - "configs/datasets/imagenet.yaml"
+    - "configs/datasets/oxford_flowers.yaml"
+    - "configs/datasets/oxford_pets.yaml"
+    - "configs/datasets/stanford_cars.yaml"
+    - "configs/datasets/sun397.yaml"
+    - "configs/datasets/ucf101.yaml"
   batch_size: 
-    values: [16,32,64]
+    values: [8, 16]
+  n_ins:
+    values: [2, 4]
   lr:
-    min: 0.0001
-    max: 0.1
+    values: [0.001, 0.002, 0.0035, 0.005]
   epochs:
     values: [5, 10, 15]
+  text-weight:
+    values: [0.1, 0.2, 0.5]
+  visual-weight:
+    values: [0.1, 0.2, 0.5]
+  command:
+    - ${env}
+    - python
+    - ${program}
+    - ${args}
+    - "DATASET.NUM_SHOTS 16"
+    - "DATASET.SUBSAMPLE_CLASSES base"
