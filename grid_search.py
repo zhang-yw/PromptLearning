@@ -184,6 +184,8 @@ def main(args):
     cfg.DATALOADER.BATCH_SIZE = wandb.config.batch_size
     cfg.OPTIM.LR = wandb.config.lr
     cfg.OPTIM.MAX_EPOCH = wandb.config.epochs
+    cfg.DATASET.NUM_SHOTS = 16
+    cfg.DATASET.SUBSAMPLE_CLASSES = "base"
 
     if cfg.SEED >= 0:
         print("Setting fixed seed: {}".format(cfg.SEED))
@@ -279,9 +281,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--n-ins", type=int, help="n_ins"
     )
-    parser.add_argument(
-        "--output-dir", type=str, help="output base dir"
-    )
+    # parser.add_argument(
+    #     "--output-dir", type=str, help="output base dir"
+    # )
     parser.add_argument(
         "opts",
         default=None,
