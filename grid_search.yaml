@@ -1,7 +1,7 @@
 # config.yaml
 program: grid_search.py
 method: random
-name: sweep
+name: search
 metric:
   goal: maximize
   name: accuracy
