@@ -307,7 +307,7 @@ class IVLP(TrainerX):
             losses.backward()
             optim.step()
 
-        loss_summary = {"loss_ce": loss_dict['loss_ce'].item(), "loss_text": loss_dict['loss_text'].item()}
+        loss_summary = {"loss_ce": loss_dict['loss_ce'].item(), "loss_text": loss_dict['loss_text'].item(), "loss_visual": loss_dict['loss_visual'].item()}
 
         if (self.batch_idx + 1) == self.num_batches:
             self.update_lr()
