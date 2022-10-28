@@ -2,6 +2,7 @@ import argparse
 import torch
 import wandb
 wandb.login()
+import yaml
 
 from dassl.utils import setup_logger, set_random_seed, collect_env_info
 from dassl.config import get_cfg_default
@@ -161,6 +162,11 @@ def setup_cfg(args):
 
 
 def main(args):
+    with open('./config.yaml') as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+    wandb.init(config=config, sync_tensorboard=True)
+    
+
     cfg = setup_cfg(args)
     if cfg.SEED >= 0:
         print("Setting fixed seed: {}".format(cfg.SEED))

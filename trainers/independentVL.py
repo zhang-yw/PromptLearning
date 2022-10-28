@@ -190,7 +190,7 @@ class CustomCLIP(nn.Module):
         self.dtype = clip_model.dtype
         self.op_loss = OrthogonalProjectionLoss(gamma=0.5)
         self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(
-        alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=1028, miner=miners.MultiSimilarityMiner(epsilon=0.1))
+        alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=256, miner=miners.MultiSimilarityMiner(epsilon=0.1))
 
     def forward(self, image, label=None):
         tokenized_prompts = self.tokenized_prompts
