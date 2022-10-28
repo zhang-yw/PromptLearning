@@ -207,7 +207,7 @@ class CustomCLIP(nn.Module):
         # logits_text = logit_scale * text_features @ text_features.t()
         # label_text = torch.arange(text_features.shape[0])
         label_text = torch.arange(text_features.shape[0]).to(text_features.device)
-        enqueue_idx = torch.arange(image_features.shape[0]).to(image_features.device)
+        # enqueue_idx = torch.arange(image_features.shape[0]).to(image_features.device)
 
         # print(text_features.shape)
         # print(image_features.shape)
@@ -222,7 +222,7 @@ class CustomCLIP(nn.Module):
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
                 "loss_text": self.op_loss(text_features, label_text),
-                "loss_visual": self.cross_batch_memory_loss(image_features, label, enqueue_idx=enqueue_idx)
+                "loss_visual": self.cross_batch_memory_loss(image_features, label)
             }
             return losses
 
