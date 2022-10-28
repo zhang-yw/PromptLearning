@@ -264,9 +264,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--batch-size", type=int, help="batch size"
     )
-    parser.add_argument(
-        "--config-file", type=str, help="config file"
-    )
+    # parser.add_argument(
+    #     "--config-file", type=str, help="config file"
+    # )
     parser.add_argument(
         "--dataset-config-file", type=str, help="dataset config file"
     )
