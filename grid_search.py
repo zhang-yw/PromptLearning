@@ -262,6 +262,27 @@ if __name__ == "__main__":
         "--visual-weight", type=float, help="weight of visual losses"
     )
     parser.add_argument(
+        "--batch-size", type=int, help="batch size"
+    )
+    parser.add_argument(
+        "--config-file", type=str, help="config file"
+    )
+    parser.add_argument(
+        "--dataset-config-file", type=str, help="dataset config file"
+    )
+    parser.add_argument(
+        "--epochs", type=int, help="epochs"
+    )
+    parser.add_argument(
+        "--lr", type=float, help="lr"
+    )
+    parser.add_argument(
+        "--n-ins", type=int, help="n_ins"
+    )
+    parser.add_argument(
+        "--output-dir", type=str, help="output base dir"
+    )
+    parser.add_argument(
         "opts",
         default=None,
         nargs=argparse.REMAINDER,
