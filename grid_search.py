@@ -164,7 +164,7 @@ def setup_cfg(args):
 
 
 def main(args):
-    with open('./config.yaml') as file:
+    with open('./grid_search.yaml') as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
     wandb.init(config=config, sync_tensorboard=True)
     os.environ["WANDB_DIR"] = os.path.abspath("/nobackup3/yiwei/wandb")
