@@ -271,8 +271,6 @@ class IVLP(TrainerX):
 
         self.scaler = GradScaler() if cfg.TRAINER.IVLP.PREC == "amp" else None
 
-        self.weight_dict = {'loss_ce': 1, 'loss_text': cfg.TEXT_WEIGHT}
-
         # Note that multi-gpu training could be slow because CLIP's size is
         # big, which slows down the copy operation in DataParallel
         device_count = torch.cuda.device_count()
@@ -286,6 +284,7 @@ class IVLP(TrainerX):
         model = self.model
         optim = self.optim
         scaler = self.scaler
+        weight_dict = {'loss_ce': 1, 'loss_text': cfg.TEXT_WEIGHT}
 
         prec = self.cfg.TRAINER.IVLP.PREC
         if prec == "amp":
@@ -297,7 +296,7 @@ class IVLP(TrainerX):
             scaler.update()
         else:
             loss_dict = model(image, label)
-            losses = sum(loss_dict[k] * self.weight_dict[k] for k in loss_dict.keys() if k in self.weight_dict)
+            losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
             optim.zero_grad()
             losses.backward()
             optim.step()
