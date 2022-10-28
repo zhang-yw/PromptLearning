@@ -181,7 +181,6 @@ def main(args):
 
     if not args.no_train:
         trainer.train()
-        trainer.test()
 
 
 if __name__ == "__main__":
