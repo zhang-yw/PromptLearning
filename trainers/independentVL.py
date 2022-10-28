@@ -201,7 +201,7 @@ class CustomCLIP(nn.Module):
 
         # logits_text = logit_scale * text_features @ text_features.t()
         # label_text = torch.arange(text_features.shape[0])
-        label_text = torch.arange(text_features.shape[0])
+        label_text = torch.arange(text_features.shape[0]).to(text_features.device)
 
         # print(text_features.shape)
         # print(image_features.shape)
