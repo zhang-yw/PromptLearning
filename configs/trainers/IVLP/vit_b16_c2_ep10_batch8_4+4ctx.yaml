@@ -2,7 +2,7 @@
 DATALOADER:
   TRAIN_X:
     SAMPLER: "RandomClassSampler"
-    N_INS: 8
+    N_INS: 4
     BATCH_SIZE: 8
   TEST:
     BATCH_SIZE: 100
