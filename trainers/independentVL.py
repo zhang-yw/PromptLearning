@@ -173,6 +173,9 @@ class CustomCLIP(nn.Module):
         text_features = text_features / text_features.norm(dim=-1, keepdim=True)
         logits = logit_scale * image_features @ text_features.t()
 
+        print(text_features.shape)
+        exit(0)
+
         if self.prompt_learner.training:
             return F.cross_entropy(logits, label)
 
