@@ -18,7 +18,7 @@ parameters:
     value: "/nobackup3/yiwei/wandb/grid_search"
   dataset_config_file:
     distribution: categorical
-    value: 
+    values: 
     - "configs/datasets/caltech101.yaml"
     - "configs/datasets/dtd.yaml"
     - "configs/datasets/eurosat.yaml"
