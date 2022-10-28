@@ -1,5 +1,7 @@
 import argparse
 import torch
+import wandb
+wandb.login()
 
 from dassl.utils import setup_logger, set_random_seed, collect_env_info
 from dassl.config import get_cfg_default
@@ -181,7 +183,6 @@ def main(args):
 
     if not args.no_train:
         trainer.train()
-        trainer.test()
 
 
 if __name__ == "__main__":
