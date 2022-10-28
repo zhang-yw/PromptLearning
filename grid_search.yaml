@@ -12,11 +12,11 @@ parameters:
     value: 1
   trainer:
     value: IVLP
-  config_file:
+  config-file:
     value: "configs/trainers/IVLP/vit_b16_c2_ep10_batch8_4+4ctx.yaml"
-  output_dir:
+  output-dir:
     value: "/nobackup3/yiwei/wandb/grid_search"
-  dataset_config_file:
+  dataset-config-file:
     distribution: categorical
     values: 
     - "configs/datasets/caltech101.yaml"
@@ -30,9 +30,9 @@ parameters:
     - "configs/datasets/stanford_cars.yaml"
     - "configs/datasets/sun397.yaml"
     - "configs/datasets/ucf101.yaml"
-  batch_size: 
+  batch-size: 
     values: [8, 16]
-  n_ins:
+  n-ins:
     values: [2, 4]
   lr:
     values: [0.001, 0.002, 0.0035, 0.005]
