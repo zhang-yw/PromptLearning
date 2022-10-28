@@ -186,6 +186,7 @@ class CustomCLIP(nn.Module):
         self.text_encoder = TextEncoder(clip_model)
         self.logit_scale = clip_model.logit_scale
         self.dtype = clip_model.dtype
+        self.op_loss = OrthogonalProjectionLoss(gamma=0.5)
 
     def forward(self, image, label=None):
         tokenized_prompts = self.tokenized_prompts
@@ -215,7 +216,7 @@ class CustomCLIP(nn.Module):
         if self.prompt_learner.training:
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
-                "loss_text": OrthogonalProjectionLoss(text_features, label_text),
+                "loss_text": self.op_loss(text_features, label_text),
             }
             return losses
 
