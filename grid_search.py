@@ -53,7 +53,7 @@ def reset_cfg(cfg, args):
     if args.root:
         cfg.DATASET.ROOT = args.root
 
-    if args.output_dir:
+    if args.outputdir:
         cfg.OUTPUT_DIR = args.output_dir
 
     if args.resume:
@@ -80,10 +80,10 @@ def reset_cfg(cfg, args):
     if args.head:
         cfg.MODEL.HEAD.NAME = args.head
     
-    if args.text_weight:
+    if args.textweight:
         cfg.TEXT_WEIGHT = args.text_weight
     
-    if args.visual_weight:
+    if args.visualweight:
         cfg.VISUAL_WEIGHT = args.visual_weight
 
 
@@ -172,16 +172,16 @@ def main(args):
     args.root = wandb.config.root
     args.seed = wandb.config.seed
     args.trainer = wandb.config.trainer
-    args.config_file = wandb.config.config_file 
-    args.dataset_config_file = wandb.config.dataset_config_file
-    args.output_dir = os.path.join(wandb.config.output_dir, uuid.uuid4().hex)
-    args.text_weight = wandb.config.text_weight 
-    args.visual_weight = wandb.config.visual_weight 
+    args.configfile = wandb.config.configfile 
+    args.datasetconfigfile = wandb.config.datasetconfigfile
+    args.outputdir = os.path.join(wandb.config.outputdir, uuid.uuid4().hex)
+    args.textweight = wandb.config.textweight 
+    args.visualweight = wandb.config.visualweight 
 
     cfg = setup_cfg(args)
 
-    cfg.DATALOADER.N_INS = wandb.config.n_ins
-    cfg.DATALOADER.BATCH_SIZE = wandb.config.batch_size
+    cfg.DATALOADER.N_INS = wandb.config.nins
+    cfg.DATALOADER.BATCH_SIZE = wandb.config.batchsize
     cfg.OPTIM.LR = wandb.config.lr
     cfg.OPTIM.MAX_EPOCH = wandb.config.epochs
     cfg.DATASET.NUM_SHOTS = 16
@@ -213,7 +213,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=str, default="", help="path to dataset")
-    parser.add_argument("--output-dir", type=str, default="", help="output directory")
+    parser.add_argument("--outputdir", type=str, default="", help="output directory")
     parser.add_argument(
         "--resume",
         type=str,
@@ -233,10 +233,10 @@ if __name__ == "__main__":
         "--transforms", type=str, nargs="+", help="data augmentation methods"
     )
     parser.add_argument(
-        "--config-file", type=str, default="", help="path to config file"
+        "--configfile", type=str, default="", help="path to config file"
     )
     parser.add_argument(
-        "--dataset-config-file",
+        "--datasetconfigfile",
         type=str,
         default="",
         help="path to config file for dataset setup",
@@ -258,13 +258,13 @@ if __name__ == "__main__":
         "--no-train", action="store_true", help="do not call trainer.train()"
     )
     parser.add_argument(
-        "--text-weight", type=float, help="weight of text losses"
+        "--textweight", type=float, help="weight of text losses"
     )
     parser.add_argument(
-        "--visual-weight", type=float, help="weight of visual losses"
+        "--visualweight", type=float, help="weight of visual losses"
     )
     parser.add_argument(
-        "--batch-size", type=int, help="batch size"
+        "--batchsize", type=int, help="batch size"
     )
     # parser.add_argument(
     #     "--config-file", type=str, help="config file"
@@ -279,7 +279,7 @@ if __name__ == "__main__":
         "--lr", type=float, help="lr"
     )
     parser.add_argument(
-        "--n-ins", type=int, help="n_ins"
+        "--nins", type=int, help="n_ins"
     )
     # parser.add_argument(
     #     "--output-dir", type=str, help="output base dir"
