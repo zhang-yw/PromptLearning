@@ -25,6 +25,7 @@ if [ -d "$DIR" ]; then
     --config-file configs/trainers/${TRAINER}/${CFG}.yaml \
     --output-dir ${DIR} \
     --text-weight 0.1 \
+    --visual-weight 0.1 \
     DATASET.NUM_SHOTS ${SHOTS} \
     DATASET.SUBSAMPLE_CLASSES base
 else
@@ -37,6 +38,7 @@ else
     --config-file configs/trainers/${TRAINER}/${CFG}.yaml \
     --output-dir ${DIR} \
     --text-weight 0.1 \
+    --visual-weight 0.1 \
     DATASET.NUM_SHOTS ${SHOTS} \
     DATASET.SUBSAMPLE_CLASSES base
 fi

@@ -2,6 +2,8 @@ import os.path as osp
 from collections import OrderedDict
 import math
 
+from pytorch_metric_learning import losses, reducers, miners
+
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
@@ -187,6 +189,8 @@ class CustomCLIP(nn.Module):
         self.logit_scale = clip_model.logit_scale
         self.dtype = clip_model.dtype
         self.op_loss = OrthogonalProjectionLoss(gamma=0.5)
+        self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(
+        alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=1028, miners=miners.MultiSimilarityMiner(epsilon=0.1))
 
     def forward(self, image, label=None):
         tokenized_prompts = self.tokenized_prompts
@@ -203,6 +207,7 @@ class CustomCLIP(nn.Module):
         # logits_text = logit_scale * text_features @ text_features.t()
         # label_text = torch.arange(text_features.shape[0])
         label_text = torch.arange(text_features.shape[0]).to(text_features.device)
+        enqueue_idx = torch.arange(image_features.shape[0]).to(image_features.device)
 
         # print(text_features.shape)
         # print(image_features.shape)
@@ -217,6 +222,7 @@ class CustomCLIP(nn.Module):
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
                 "loss_text": self.op_loss(text_features, label_text),
+                "loss_visual": self.cross_batch_memory_loss(image_features, enqueue_idx=enqueue_idx)
             }
             return losses
 
@@ -284,7 +290,7 @@ class IVLP(TrainerX):
         model = self.model
         optim = self.optim
         scaler = self.scaler
-        weight_dict = {'loss_ce': 1, 'loss_text': self.cfg.TEXT_WEIGHT}
+        weight_dict = {'loss_ce': 1, 'loss_text': self.cfg.TEXT_WEIGHT, 'loss_visual': self.cfg.VISUAL_WEIGHT}
 
         prec = self.cfg.TRAINER.IVLP.PREC
         if prec == "amp":

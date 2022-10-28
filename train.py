@@ -77,6 +77,9 @@ def reset_cfg(cfg, args):
     
     if args.text_weight:
         cfg.TEXT_WEIGHT = args.text_weight
+    
+    if args.visual_weight:
+        cfg.VISUAL_WEIGHT = args.visual_weight
 
 
 def extend_cfg(cfg):
@@ -229,6 +232,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--text-weight", type=float, help="weight of text losses"
+    )
+    parser.add_argument(
+        "--visual-weight", type=float, help="weight of visual losses"
     )
     parser.add_argument(
         "opts",
