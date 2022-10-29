@@ -54,7 +54,7 @@ def reset_cfg(cfg, args):
         cfg.DATASET.ROOT = args.root
 
     if args.outputdir:
-        cfg.OUTPUT_DIR = args.output_dir
+        cfg.OUTPUT_DIR = args.outputdir
 
     if args.resume:
         cfg.RESUME = args.resume
@@ -81,10 +81,10 @@ def reset_cfg(cfg, args):
         cfg.MODEL.HEAD.NAME = args.head
     
     if args.textweight:
-        cfg.TEXT_WEIGHT = args.text_weight
+        cfg.TEXT_WEIGHT = args.textweight
     
     if args.visualweight:
-        cfg.VISUAL_WEIGHT = args.visual_weight
+        cfg.VISUAL_WEIGHT = args.visualweight
 
 
 def extend_cfg(cfg):
