@@ -165,12 +165,12 @@ def setup_cfg(args):
     extend_cfg(cfg)
 
     # 1. From the dataset config file
-    if args.datasetconfigfile:
-        cfg.merge_from_file(args.datasetconfigfile)
+    if args.dataset_config_file:
+        cfg.merge_from_file(args.dataset_config_file)
 
     # 2. From the method config file
-    if args.configfile:
-        cfg.merge_from_file(args.configfile)
+    if args.config_file:
+        cfg.merge_from_file(args.config_file)
 
     # 3. From input arguments
     reset_cfg(cfg, args)
