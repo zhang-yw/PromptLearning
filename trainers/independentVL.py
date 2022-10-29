@@ -290,7 +290,7 @@ class IVLP(TrainerX):
         model = self.model
         optim = self.optim
         scaler = self.scaler
-        weight_dict = {'loss_ce': 1, 'loss_text': self.cfg.TEXT_WEIGHT, 'loss_visual': self.cfg.VISUAL_WEIGHT}
+        weight_dict = {'loss_ce': 1, 'loss_text': self.cfg.TRAINER.IVLP.TEXT_WEIGHT, 'loss_visual': self.cfg.TRAINER.IVLP.VISUAL_WEIGHT}
 
         prec = self.cfg.TRAINER.IVLP.PREC
         if prec == "amp":

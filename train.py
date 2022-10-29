@@ -76,10 +76,10 @@ def reset_cfg(cfg, args):
         cfg.MODEL.HEAD.NAME = args.head
     
     if args.text_weight:
-        cfg.TEXT_WEIGHT = args.text_weight
+        cfg.TRAINER.IVLP.TEXT_WEIGHT = args.text_weight
     
     if args.visual_weight:
-        cfg.VISUAL_WEIGHT = args.visual_weight
+        cfg.TRAINER.IVLP.VISUAL_WEIGHT = args.visual_weight
 
 
 def extend_cfg(cfg):
@@ -124,6 +124,8 @@ def extend_cfg(cfg):
     # If both variables below are set to 0, 0, will the config will degenerate to COOP model
     cfg.TRAINER.IVLP.PROMPT_DEPTH_VISION = 9 # Max 12, minimum 0, for 0 it will act as shallow MaPLe (J=1)
     cfg.TRAINER.IVLP.PROMPT_DEPTH_TEXT = 9  # Max 12, minimum 0, for 0 it will act as shallow MaPLe (J=1)
+    cfg.TRAINER.IVLP.TEXT_WEIGHT = 0.0
+    cfg.TRAINER.IVLP.VISUAL_WEIGHT = 0.0
     cfg.DATASET.SUBSAMPLE_CLASSES = "all"  # all, base or new
 
     # Config for only vision side prompting
