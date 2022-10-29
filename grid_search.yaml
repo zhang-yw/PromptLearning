@@ -4,7 +4,7 @@ method: random
 name: search
 metric:
   goal: maximize
-  name: accuracy
+  name: test/accuracy
 parameters:
   root: 
     value: "/nobackup3/yiwei/data/"
