@@ -39,6 +39,6 @@ parameters:
   epochs:
     values: [5, 10, 15]
   textweight:
-    values: [0.1, 0.2, 0.5]
+    values: [0.0, 0.1, 0.2, 0.5]
   visualweight:
-    values: [0.1, 0.2, 0.5]
+    values: [0.0, 0.1, 0.2, 0.5]
