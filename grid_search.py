@@ -180,12 +180,16 @@ def main(args):
 
     cfg = setup_cfg(args)
 
-    cfg.DATALOADER.N_INS = wandb.config.nins
-    cfg.DATALOADER.BATCH_SIZE = wandb.config.batchsize
-    cfg.OPTIM.LR = wandb.config.lr
-    cfg.OPTIM.MAX_EPOCH = wandb.config.epochs
-    cfg.DATASET.NUM_SHOTS = 16
-    cfg.DATASET.SUBSAMPLE_CLASSES = "base"
+    opts = ["DATALOADER.N_INS", wandb.config.nins, "DATALOADER.BATCH_SIZE", wandb.config.batchsize,
+    "OPTIM.LR", wandb.config.lr, "OPTIM.MAX_EPOCH", wandb.config.epochs, "DATASET.NUM_SHOTS", 16,
+    "DATASET.SUBSAMPLE_CLASSES", "base"]
+
+    # cfg.DATALOADER.N_INS = wandb.config.nins
+    # cfg.DATALOADER.BATCH_SIZE = wandb.config.batchsize
+    # cfg.OPTIM.LR = wandb.config.lr
+    # cfg.OPTIM.MAX_EPOCH = wandb.config.epochs
+    # cfg.DATASET.NUM_SHOTS = 16
+    # cfg.DATASET.SUBSAMPLE_CLASSES = "base"
 
     if cfg.SEED >= 0:
         print("Setting fixed seed: {}".format(cfg.SEED))
