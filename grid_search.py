@@ -174,7 +174,7 @@ def main(args):
     args.trainer = wandb.config.trainer
     args.configfile = wandb.config.configfile 
     args.datasetconfigfile = wandb.config.datasetconfigfile
-    args.outputdir = os.path.join(wandb.config.outputdir, uuid.uuid4().hex)
+    args.outputdir = os.path.join(wandb.config.outputdir, wandb.run.id)
     args.textweight = wandb.config.textweight 
     args.visualweight = wandb.config.visualweight 
 
