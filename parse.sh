@@ -1,5 +1,6 @@
 OUTPUT=$1
-DATASET=$2
+CATEGORY=$2
+DATASET=$3
 CFG=vit_b16_c2_ep10_batch8_4+4ctx
 SHOTS=16
 
