@@ -45,7 +45,7 @@ class OrthogonalProjectionLoss(nn.Module):
         super(OrthogonalProjectionLoss, self).__init__()
         self.gamma = gamma
 
-    def forward(self, features, labels=None):
+    def forward(self, features, labels=None, logit_scale=1.0):
         device = (torch.device('cuda') if features.is_cuda else torch.device('cpu'))
 
         #  features are already normalized
@@ -58,7 +58,7 @@ class OrthogonalProjectionLoss(nn.Module):
 
         mask_pos = mask.masked_fill(eye, 0).float()
         mask_neg = (~mask).float()
-        dot_prod = torch.matmul(features, features.t())
+        dot_prod = logit_scale * torch.matmul(features, features.t())
 
         pos_pairs_mean = (mask_pos * dot_prod).sum() / (mask_pos.sum() + 1e-6)
         neg_pairs_mean = (mask_neg * dot_prod).sum() / (mask_neg.sum() + 1e-6)  # TODO: removed abs
@@ -221,8 +221,8 @@ class CustomCLIP(nn.Module):
         if self.prompt_learner.training:
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
-                "loss_text": self.op_loss(text_features, label_text),
-                "loss_visual": self.op_loss(image_features, label),
+                "loss_text": self.op_loss(text_features, label_text, logit_scale),
+                "loss_visual": self.op_loss(image_features, label, logit_scale),
             }
             return losses
 
