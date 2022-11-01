@@ -59,11 +59,14 @@ class OrthogonalProjectionLoss(nn.Module):
         mask_pos = mask.masked_fill(eye, 0).float()
         mask_neg = (~mask).float()
         dot_prod = torch.matmul(features, features.t())
-
+        print(dot_prod)
         pos_pairs_mean = (mask_pos * dot_prod).sum() / (mask_pos.sum() + 1e-6)
         neg_pairs_mean = (mask_neg * dot_prod).sum() / (mask_neg.sum() + 1e-6)  # TODO: removed abs
-
+        print(pos_pairs_mean)
+        print(neg_pairs_mean)
         loss = (1.0 - pos_pairs_mean) + self.gamma * neg_pairs_mean
+        print(loss)
+        exit(0)
 
         return loss
 
@@ -221,7 +224,7 @@ class CustomCLIP(nn.Module):
         if self.prompt_learner.training:
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
-                "loss_text": self.op_loss(text_features, label_text),
+                "loss_text": 0.0,
                 "loss_visual": self.op_loss(image_features, label),
             }
             return losses
