@@ -57,6 +57,7 @@ class OrthogonalProjectionLoss(nn.Module):
         eye = torch.eye(mask.shape[0], mask.shape[1]).bool().to(device)
 
         mask_pos = mask.masked_fill(eye, 0).float()
+        print(mask_pos)
         mask_neg = (~mask).float()
         dot_prod = torch.matmul(features, features.t())
         print(dot_prod)
