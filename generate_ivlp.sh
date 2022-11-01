@@ -13,12 +13,12 @@ TEXT_WEIGHT=$3
 VISUAL_WEIGHT=$4
 
 # CFG=vit_b16_c2_ep5_batch4_2+2ctx
-CFG=vit_b16_c2_ep10_batch8_4+4ctx
+CFG=test
 SHOTS=16
 LOADEP=10
 SUB=new
 
-for DATASET in caltech101 food101 dtd ucf101 oxford_flowers oxford_pets fgvc_aircraft stanford_cars sun397 eurosat
+for DATASET in caltech101 food101 dtd ucf101 oxford_flowers oxford_pets fgvc_aircraft stanford_cars sun397 eurosat imagenet
 do
     DIR=/nobackup3/yiwei/output_ivlp/${OUTPUT}/base2new/train_base/${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/seed${SEED}
     python train.py \

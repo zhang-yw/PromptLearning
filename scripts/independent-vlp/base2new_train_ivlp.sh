@@ -12,7 +12,7 @@ TEXT_WEIGHT=$3
 VISUAL_WEIGHT=$4
 
 # CFG=vit_b16_c2_ep5_batch4_2+2ctx
-CFG=test
+CFG=vit_b16_c2_ep10_batch8_4+4ctx
 SHOTS=16
 
 
