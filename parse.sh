@@ -1,7 +1,7 @@
 OUTPUT=$1
 CATEGORY=$2
 DATASET=$3
-CFG=vit_b16_c2_ep10_batch8_4+4ctx
+CFG=test
 SHOTS=16
 
 
