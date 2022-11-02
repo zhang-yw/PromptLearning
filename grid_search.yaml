@@ -9,7 +9,7 @@ parameters:
   root: 
     value: "/nobackup3/yiwei/data/"
   seed:
-    values: [1, 2, 3]
+    value: 1
   trainer:
     value: IVLP
   config-file:
@@ -36,13 +36,13 @@ parameters:
   batch-size: 
     value: 16
   n-ins:
-    values: [4, 8]
+    values: [2, 4, 8]
   lr:
     value: 0.0035
   epochs:
     value: 10
   visual-weight:
-    values: [0.0, 0.1, 0.25, 0.5, 1.0]
+    values: [0.0, 0.25, 0.5, 1.0]
   visual-loss:
     distribution: categorical
     values: 
@@ -52,8 +52,8 @@ parameters:
   n-ctx-vision:
     values: [4, 8, 32]
   n-ctx-text:
-    values: [2, 4]
+    value: 4
   prompt-depth-vision:
     values: [9, 12]
-  prompt-depth-text:
+  prompt-depth-vision:
     values: [1, 9, 12]

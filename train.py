@@ -156,7 +156,7 @@ def setup_cfg(args):
     # 4. From optional input arguments
     cfg.merge_from_list(args.opts)
 
-    cfg.freeze()
+    # cfg.freeze()
 
     return cfg
 
@@ -176,14 +176,21 @@ def main(args):
     print("** System info **\n{}\n".format(collect_env_info()))
 
     trainer = build_trainer(cfg)
+    print(trainer.train())
+    cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
+    print(trainer.test())
+    cfg.SEED = cfg.SEED + 1
+    trainer = build_trainer(cfg)
+    print(trainer.train())
+    cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
+    print(trainer.test())
+    # if args.eval_only:
+    #     trainer.load_model(args.model_dir, epoch=args.load_epoch)
+    #     trainer.test()
+    #     return
 
-    if args.eval_only:
-        trainer.load_model(args.model_dir, epoch=args.load_epoch)
-        trainer.test()
-        return
-
-    if not args.no_train:
-        print(trainer.train())
+    # if not args.no_train:
+    #     print(trainer.train())
     # trainer.train()
     # cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
     # print(cfg.DATASET.SUBSAMPLE_CLASSES)
