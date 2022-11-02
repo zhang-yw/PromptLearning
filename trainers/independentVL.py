@@ -201,7 +201,7 @@ class CustomCLIP(nn.Module):
             self.miner = miners.MultiSimilarityMiner(epsilon=0.1)
         else:
             raise NotImplementedError 
-        self.visual_loss = visual_loss
+        self.visual_loss_type = visual_loss
         # self.op_loss = OrthogonalProjectionLoss(gamma=0.5) 
         # self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=256, miner=miners.MultiSimilarityMiner(epsilon=0.1))
         # self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=256, miner=miners.MultiSimilarityMiner(epsilon=0.1))
@@ -233,7 +233,7 @@ class CustomCLIP(nn.Module):
         # exit(0)
 
         if self.prompt_learner.training:
-            if self.visual_loss == "multi_similarity_loss":
+            if self.visual_loss_type == "multi_similarity_loss":
                 miner_output = self.miner(image_features, label)
                 visual_loss = self.visual_loss(image_features, label, miner_output)
             else:
