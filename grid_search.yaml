@@ -41,7 +41,5 @@ parameters:
     values: [0.001, 0.002, 0.0035, 0.005]
   epochs:
     values: [5, 10]
-  text-weight:
-    values: [0.0, 0.1, 0.2, 0.5]
   visual-weight:
     values: [0.0, 0.1, 0.2, 0.5]
