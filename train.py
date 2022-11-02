@@ -1,5 +1,6 @@
 import argparse
 import torch
+import os
 
 from dassl.utils import setup_logger, set_random_seed, collect_env_info
 from dassl.config import get_cfg_default
@@ -166,7 +167,8 @@ def main(args):
     if cfg.SEED >= 0:
         print("Setting fixed seed: {}".format(cfg.SEED))
         set_random_seed(cfg.SEED)
-    setup_logger(cfg.OUTPUT_DIR)
+    # setup_logger(cfg.OUTPUT_DIR)
+    setup_logger(os.path.join(cfg.OUTPUT_DIR, cfg.SEED))
 
     if torch.cuda.is_available() and cfg.USE_CUDA:
         torch.backends.cudnn.benchmark = True
@@ -181,6 +183,7 @@ def main(args):
     print(trainer.test())
     cfg.SEED = cfg.SEED + 1
     set_random_seed(cfg.SEED)
+    setup_logger(os.path.join(cfg.OUTPUT_DIR, cfg.SEED))
     trainer = build_trainer(cfg)
     print(trainer.train())
     cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
