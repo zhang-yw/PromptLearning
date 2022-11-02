@@ -41,4 +41,4 @@ TRAINER:
     PROMPT_DEPTH_TEXT: 9
     TEXT_WEIGHT: 0.0
     VISUAL_WEIGHT: 0.0
-    VISUAL_LOSS: "multi_similarity_loss"
+    VISUAL_LOSS: "multi_similarity_loss_miner"
