@@ -229,10 +229,6 @@ def main(args):
 
     if cfg.SEED >= 0:
         print("Setting fixed seed: {}".format(cfg.SEED))
-        set_random_seed(cfg.SEED)
-    output_dir = cfg.OUTPUT_DIR
-    cfg.OUTPUT_DIR = os.path.join(output_dir, str(cfg.SEED))
-    setup_logger(cfg.OUTPUT_DIR)
 
     if torch.cuda.is_available() and cfg.USE_CUDA:
         torch.backends.cudnn.benchmark = True
@@ -240,30 +236,45 @@ def main(args):
     print_args(args, cfg)
     print("Collecting env info ...")
     print("** System info **\n{}\n".format(collect_env_info()))
-
+    set_random_seed(cfg.SEED)
+    output_dir = cfg.OUTPUT_DIR
+    output_dir_1 = os.path.join(output_dir, str(cfg.SEED))
+    cfg.OUTPUT_DIR = os.path.join(output_dir_1, "base")
+    setup_logger(cfg.OUTPUT_DIR)
     trainer = build_trainer(cfg)
     base_accuracy_1 = trainer.train()
     cfg.DATASET.SUBSAMPLE_CLASSES = "new"
+    cfg.OUTPUT_DIR = os.path.join(output_dir_1, "new")
+    setup_logger(cfg.OUTPUT_DIR)
+    trainer = build_trainer(cfg)
     novel_accuracy_1 = trainer.test()
 
     cfg.SEED = cfg.SEED + 1
     set_random_seed(cfg.SEED)
-    cfg.OUTPUT_DIR = os.path.join(output_dir, str(cfg.SEED))
+    output_dir_2 = os.path.join(output_dir, str(cfg.SEED))
+    cfg.OUTPUT_DIR = os.path.join(output_dir_2, "base")
     cfg.DATASET.SUBSAMPLE_CLASSES = "base"
     setup_logger(cfg.OUTPUT_DIR)
     trainer = build_trainer(cfg)
     base_accuracy_2 = trainer.train()
     cfg.DATASET.SUBSAMPLE_CLASSES = "new"
+    cfg.OUTPUT_DIR = os.path.join(output_dir_2, "new")
+    setup_logger(cfg.OUTPUT_DIR)
+    trainer = build_trainer(cfg)
     novel_accuracy_2 = trainer.test()
 
     cfg.SEED = cfg.SEED + 1
     set_random_seed(cfg.SEED)
-    cfg.OUTPUT_DIR = os.path.join(output_dir, str(cfg.SEED))
+    output_dir_3 = os.path.join(output_dir, str(cfg.SEED))
+    cfg.OUTPUT_DIR = os.path.join(output_dir_3, "base")
     cfg.DATASET.SUBSAMPLE_CLASSES = "base"
     setup_logger(cfg.OUTPUT_DIR)
     trainer = build_trainer(cfg)
     base_accuracy_3 = trainer.train()
     cfg.DATASET.SUBSAMPLE_CLASSES = "new"
+    cfg.OUTPUT_DIR = os.path.join(output_dir_3, "new")
+    setup_logger(cfg.OUTPUT_DIR)
+    trainer = build_trainer(cfg)
     novel_accuracy_3 = trainer.test()
 
     mean_accuracy = 0.1666 * base_accuracy_1 + 0.1666 * novel_accuracy_1 + 0.1666 * base_accuracy_2 + 0.1666 * novel_accuracy_2 + 0.1666 * base_accuracy_3 + 0.1666 * novel_accuracy_3
