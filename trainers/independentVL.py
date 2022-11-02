@@ -57,17 +57,17 @@ class OrthogonalProjectionLoss(nn.Module):
         eye = torch.eye(mask.shape[0], mask.shape[1]).bool().to(device)
 
         mask_pos = mask.masked_fill(eye, 0).float()
-        print(mask_pos)
+        # print(mask_pos)
         mask_neg = (~mask).float()
         dot_prod = torch.matmul(features, features.t())
-        print(dot_prod)
+        # print(dot_prod)
         pos_pairs_mean = (mask_pos * dot_prod).sum() / (mask_pos.sum() + 1e-6)
         neg_pairs_mean = (mask_neg * dot_prod).sum() / (mask_neg.sum() + 1e-6)  # TODO: removed abs
-        print(pos_pairs_mean)
-        print(neg_pairs_mean)
+        # print(pos_pairs_mean)
+        # print(neg_pairs_mean)
         loss = (1.0 - pos_pairs_mean) + self.gamma * neg_pairs_mean
-        print(loss)
-        exit(0)
+        # print(loss)
+        # exit(0)
 
         return loss
 
@@ -184,7 +184,7 @@ class VLPromptLearner(nn.Module):
 
 
 class CustomCLIP(nn.Module):
-    def __init__(self, cfg, classnames, clip_model):
+    def __init__(self, cfg, classnames, clip_model, visual_loss):
         super().__init__()
         self.prompt_learner = VLPromptLearner(cfg, classnames, clip_model)
         self.tokenized_prompts = self.prompt_learner.tokenized_prompts
@@ -192,7 +192,15 @@ class CustomCLIP(nn.Module):
         self.text_encoder = TextEncoder(clip_model)
         self.logit_scale = clip_model.logit_scale
         self.dtype = clip_model.dtype
-        self.op_loss = OrthogonalProjectionLoss(gamma=0.5) 
+        if visual_loss == "multi_similarity_loss":
+            self.visual_loss = losses.MultiSimilarityLoss(alpha=2, beta=50, base=0.5)
+        elif visual_loss == "NTXent_loss":
+            self.visual_loss = losses.NTXentLoss(temperature=0.07)
+        elif visual_loss == "arc_face_loss":
+            self.visual_loss = None
+        else:
+            raise NotImplementedError 
+        # self.op_loss = OrthogonalProjectionLoss(gamma=0.5) 
         # self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=256, miner=miners.MultiSimilarityMiner(epsilon=0.1))
         # self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=256, miner=miners.MultiSimilarityMiner(epsilon=0.1))
 
@@ -226,7 +234,7 @@ class CustomCLIP(nn.Module):
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
                 "loss_text": 0.0,
-                "loss_visual": self.op_loss(image_features, label),
+                "loss_visual": self.visual_loss(image_features, label),
             }
             return losses
 
@@ -250,7 +258,7 @@ class IVLP(TrainerX):
             clip_model.float()
 
         print("Building custom CLIP")
-        self.model = CustomCLIP(cfg, classnames, clip_model)
+        self.model = CustomCLIP(cfg, classnames, clip_model, cfg.TRAINER.IVLP.VISUAL_LOSS)
 
         print("Turning off gradients in both the image and the text encoder")
         name_to_update = "prompt_learner"
@@ -276,6 +284,11 @@ class IVLP(TrainerX):
         self.model.to(self.device)
         # NOTE: only give prompt_learner to the optimizer
         self.optim = build_optimizer(self.model, cfg.OPTIM)
+
+        if cfg.TRAINER.IVLP.VISUAL_LOSS == "arc_face_loss":
+            self.model.visual_loss = losses.ArcFaceLoss(self.num_classes, 512, margin=28.6, scale=64)
+            self.optim.add_param_group({'params': self.model.visual_loss.parameters()})
+
         self.sched = build_lr_scheduler(self.optim, cfg.OPTIM)
         self.register_model("VLPromptLearner", self.model, self.optim, self.sched)
 
