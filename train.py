@@ -168,7 +168,8 @@ def main(args):
         print("Setting fixed seed: {}".format(cfg.SEED))
         set_random_seed(cfg.SEED)
     # setup_logger(cfg.OUTPUT_DIR)
-    setup_logger(os.path.join(cfg.OUTPUT_DIR, str(cfg.SEED)))
+    cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(cfg.SEED))
+    setup_logger(cfg.OUTPUT_DIR)
 
     if torch.cuda.is_available() and cfg.USE_CUDA:
         torch.backends.cudnn.benchmark = True
@@ -183,7 +184,8 @@ def main(args):
     print(trainer.test())
     cfg.SEED = cfg.SEED + 1
     set_random_seed(cfg.SEED)
-    setup_logger(os.path.join(cfg.OUTPUT_DIR, str(cfg.SEED)))
+    cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(cfg.SEED))
+    setup_logger(cfg.OUTPUT_DIR)
     trainer = build_trainer(cfg)
     print(trainer.train())
     cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
