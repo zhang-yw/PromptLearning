@@ -231,13 +231,13 @@ class CustomCLIP(nn.Module):
         # print(logits.shape)
         # print(logits)
         # exit(0)
-        if self.visual_loss == "arc_face_loss":
-            miner_output = self.miner(image_features, label)
-            visual_loss = self.visual_loss(image_features, label, miner_output)
-        else:
-            visual_loss = self.visual_loss(image_features, label)
 
         if self.prompt_learner.training:
+            if self.visual_loss == "multi_similarity_loss":
+                miner_output = self.miner(image_features, label)
+                visual_loss = self.visual_loss(image_features, label, miner_output)
+            else:
+                visual_loss = self.visual_loss(image_features, label)
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
                 "loss_text": 0.0,
