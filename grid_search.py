@@ -359,9 +359,6 @@ if __name__ == "__main__":
         "--n-ctx-text", type=int, help="n-ctx-text"
     )
     parser.add_argument(
-        "--n-ctx-text", type=int, help="n-ctx-text"
-    )
-    parser.add_argument(
         "--prompt-depth-vision", type=int, help="prompt-depth-vision"
     )
     parser.add_argument(
