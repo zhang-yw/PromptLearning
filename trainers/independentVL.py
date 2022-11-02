@@ -195,7 +195,7 @@ class CustomCLIP(nn.Module):
         if visual_loss == "multi_similarity_loss":
             self.visual_loss = losses.MultiSimilarityLoss(alpha=2, beta=50, base=1)
             # self.miner = miners.MultiSimilarityMiner(epsilon=0.1)
-        if visual_loss == "multi_similarity_loss_miner":
+        elif visual_loss == "multi_similarity_loss_miner":
             self.visual_loss = losses.MultiSimilarityLoss(alpha=2, beta=50, base=1)
             self.miner = miners.MultiSimilarityMiner(epsilon=0.1)
         elif visual_loss == "NTXent_loss":
