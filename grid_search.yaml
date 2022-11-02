@@ -34,13 +34,13 @@ parameters:
     - "configs/datasets/sun397.yaml"
     - "configs/datasets/ucf101.yaml"
   batch-size: 
-    values: [8, 16]
+    value: 16
   n-ins:
-    values: [2, 4]
+    values: [4, 8]
   lr:
-    values: [0.001, 0.002, 0.0035, 0.005, 0.01]
+    value: 0.0035
   epochs:
-    values: [5, 10, 15]
+    value: 10
   visual-weight:
     values: [0.0, 0.1, 0.25, 0.5, 1.0]
   visual-loss:
@@ -49,3 +49,11 @@ parameters:
     - "multi_similarity_loss"
     - "multi_similarity_loss_miner"
     - "NTXent_loss"
+  n-ctx-vision:
+    values: [4, 8, 32]
+  n-ctx-text:
+    values: [2, 4]
+  prompt-depth-vision:
+    values: [9, 12]
+  prompt-depth-text:
+    values: [1, 9, 12]

@@ -103,6 +103,21 @@ def reset_cfg(cfg, args):
     
     if args.subsample_classes:
         cfg.DATASET.SUBSAMPLE_CLASSES = args.subsample_classes
+    
+    if args.visual_loss:
+        cfg.TRAINER.IVLP.VISUAL_LOSS = args.visual_loss
+
+    if args.n_ctx_vision:
+        cfg.TRAINER.IVLP.N_CTX_VISION = args.n_ctx_vision
+    
+    if args.n_ctx_text:
+        cfg.TRAINER.IVLP.N_CTX_TEXT = args.n_ctx_text
+    
+    if args.prompt_depth_vision:
+        cfg.TRAINER.IVLP.PROMPT_DEPTH_VISION = args.prompt_depth_vision
+
+    if args.prompt_depth_text:
+        cfg.TRAINER.IVLP.PROMPT_DEPTH_TEXT = args.prompt_depth_text
 
 
 def extend_cfg(cfg):
@@ -149,6 +164,7 @@ def extend_cfg(cfg):
     cfg.TRAINER.IVLP.PROMPT_DEPTH_TEXT = 9  # Max 12, minimum 0, for 0 it will act as shallow MaPLe (J=1)
     cfg.TRAINER.IVLP.TEXT_WEIGHT = 0.0
     cfg.TRAINER.IVLP.VISUAL_WEIGHT = 0.0
+    cfg.TRAINER.IVLP.VISUAL_LOSS = "multi_similarity_loss"
     cfg.DATASET.SUBSAMPLE_CLASSES = "all"  # all, base or new
 
     # Config for only vision side prompting
@@ -317,6 +333,24 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--subsample-classes", type=str, help="subsample_classes"
+    )
+    parser.add_argument(
+        "--visual-loss", type=str, help="visual_loss"
+    )
+    parser.add_argument(
+        "--n-ctx-vision", type=int, help="n-ctx-vision"
+    )
+    parser.add_argument(
+        "--n-ctx-text", type=int, help="n-ctx-text"
+    )
+    parser.add_argument(
+        "--n-ctx-text", type=int, help="n-ctx-text"
+    )
+    parser.add_argument(
+        "--prompt-depth-vision", type=int, help="prompt-depth-vision"
+    )
+    parser.add_argument(
+        "--prompt-depth-text", type=int, help="prompt-depth-text"
     )
     # parser.add_argument(
     #     "--output-dir", type=str, help="output base dir"
