@@ -194,7 +194,7 @@ class CustomCLIP(nn.Module):
         self.dtype = clip_model.dtype
         if visual_loss == "multi_similarity_loss":
             self.visual_loss = losses.MultiSimilarityLoss(alpha=2, beta=50, base=0.5)
-            self.miner = miners.MultiSimilarityMiner(epsilon=0.1)
+            # self.miner = miners.MultiSimilarityMiner(epsilon=0.1)
         elif visual_loss == "NTXent_loss":
             self.visual_loss = losses.NTXentLoss(temperature=0.07)
         elif visual_loss == "arc_face_loss":
@@ -233,11 +233,12 @@ class CustomCLIP(nn.Module):
         # exit(0)
 
         if self.prompt_learner.training:
-            if self.visual_loss_type == "multi_similarity_loss":
-                miner_output = self.miner(image_features, label)
-                visual_loss = self.visual_loss(image_features, label, miner_output)
-            else:
-                visual_loss = self.visual_loss(image_features, label)
+            visual_loss = self.visual_loss(image_features, label)
+            # if self.visual_loss_type == "multi_similarity_loss":
+            #     miner_output = self.miner(image_features, label)
+            #     visual_loss = self.visual_loss(image_features, label, miner_output)
+            # else:
+            #     visual_loss = self.visual_loss(image_features, label)
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
                 "loss_text": 0.0,
