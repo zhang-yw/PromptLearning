@@ -186,6 +186,7 @@ def main(args):
     #     trainer.train()
     # trainer.train()
     cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
+    print(cfg.DATASET.SUBSAMPLE_CLASSES)
     # cfg.DATASET.SUBSAMPLE_CLASSES = "new"
     print(trainer.test())
 
