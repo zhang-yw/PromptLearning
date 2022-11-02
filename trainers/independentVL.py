@@ -198,8 +198,10 @@ class CustomCLIP(nn.Module):
             self.visual_loss = losses.NTXentLoss(temperature=0.07)
         elif visual_loss == "arc_face_loss":
             self.visual_loss = None
+            self.miner = miners.MultiSimilarityMiner(epsilon=0.1)
         else:
             raise NotImplementedError 
+        self.visual_loss = visual_loss
         # self.op_loss = OrthogonalProjectionLoss(gamma=0.5) 
         # self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=256, miner=miners.MultiSimilarityMiner(epsilon=0.1))
         # self.cross_batch_memory_loss = losses.CrossBatchMemory(loss=losses.MultiSimilarityLoss(alpha=2, beta=40, base=0.5, reducer=reducers.AvgNonZeroReducer()), embedding_size=512, memory_size=256, miner=miners.MultiSimilarityMiner(epsilon=0.1))
@@ -229,12 +231,17 @@ class CustomCLIP(nn.Module):
         # print(logits.shape)
         # print(logits)
         # exit(0)
+        if self.visual_loss == "arc_face_loss":
+            miner_output = self.miner(image_features, label)
+            visual_loss = self.visual_loss(image_features, label, miner_output)
+        else:
+            visual_loss = self.visual_loss(image_features, label)
 
         if self.prompt_learner.training:
             losses = {
                 "loss_ce": F.cross_entropy(logits, label),
                 "loss_text": 0.0,
-                "loss_visual": self.visual_loss(image_features, label),
+                "loss_visual": visual_loss,
             }
             return losses
 
