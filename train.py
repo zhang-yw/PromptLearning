@@ -181,6 +181,8 @@ def main(args):
     trainer = build_trainer(cfg)
     print(trainer.train())
     cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
+    cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, "new")
+    trainer = build_trainer(cfg)
     print(trainer.test())
     cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "base"])
     cfg.SEED = cfg.SEED + 1
