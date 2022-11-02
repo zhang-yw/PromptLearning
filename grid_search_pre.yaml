@@ -28,6 +28,7 @@ parameters:
     - "configs/datasets/eurosat.yaml"
     - "configs/datasets/fgvc_aircraft.yaml"
     - "configs/datasets/food101.yaml"
+    - "configs/datasets/imagenet.yaml"
     - "configs/datasets/oxford_flowers.yaml"
     - "configs/datasets/oxford_pets.yaml"
     - "configs/datasets/stanford_cars.yaml"

@@ -1,5 +1,10 @@
 import argparse
 import torch
+import wandb
+wandb.login()
+import yaml
+import os
+import uuid
 
 from dassl.utils import setup_logger, set_random_seed, collect_env_info
 from dassl.config import get_cfg_default
@@ -81,6 +86,24 @@ def reset_cfg(cfg, args):
     if args.visual_weight:
         cfg.TRAINER.IVLP.VISUAL_WEIGHT = args.visual_weight
 
+    if args.n_ins:
+        cfg.DATALOADER.TRAIN_X.N_INS = args.n_ins
+    
+    if args.batch_size:
+        cfg.DATALOADER.TRAIN_X.BATCH_SIZE = args.batch_size
+    
+    if args.lr:
+        cfg.OPTIM.LR = args.lr
+
+    if args.epochs:
+        cfg.OPTIM.MAX_EPOCH = args.epochs
+    
+    if args.num_shots:
+        cfg.DATASET.NUM_SHOTS = args.num_shots
+    
+    if args.subsample_classes:
+        cfg.DATASET.SUBSAMPLE_CLASSES = args.subsample_classes
+
 
 def extend_cfg(cfg):
     """
@@ -126,7 +149,6 @@ def extend_cfg(cfg):
     cfg.TRAINER.IVLP.PROMPT_DEPTH_TEXT = 9  # Max 12, minimum 0, for 0 it will act as shallow MaPLe (J=1)
     cfg.TRAINER.IVLP.TEXT_WEIGHT = 0.0
     cfg.TRAINER.IVLP.VISUAL_WEIGHT = 0.0
-    cfg.TRAINER.IVLP.VISUAL_LOSS = "multi_similarity_loss"
     cfg.DATASET.SUBSAMPLE_CLASSES = "all"  # all, base or new
 
     # Config for only vision side prompting
@@ -154,7 +176,7 @@ def setup_cfg(args):
     reset_cfg(cfg, args)
 
     # 4. From optional input arguments
-    cfg.merge_from_list(args.opts)
+    # cfg.merge_from_list(args.opts)
 
     cfg.freeze()
 
@@ -162,7 +184,33 @@ def setup_cfg(args):
 
 
 def main(args):
+    with open('./grid_search.yaml') as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+    wandb.init(config=config, sync_tensorboard=True)
+    os.environ["WANDB_DIR"] = os.path.abspath("/nobackup3/yiwei/wandb")
+
+    # args.root = wandb.config.root
+    # args.seed = wandb.config.seed
+    # args.trainer = wandb.config.trainer
+    # args.configfile = wandb.config.configfile 
+    # args.datasetconfigfile = wandb.config.datasetconfigfile
+    args.output_dir = os.path.join(args.output_dir, wandb.run.id)
+    # args.textweight = wandb.config.textweight 
+    # args.visualweight = wandb.config.visualweight 
+
+    # args.opts = ["DATALOADER.N_INS", wandb.config.nins, "DATALOADER.BATCH_SIZE", wandb.config.batchsize,
+    # "OPTIM.LR", wandb.config.lr, "OPTIM.MAX_EPOCH", wandb.config.epochs, "DATASET.NUM_SHOTS", 16,
+    # "DATASET.SUBSAMPLE_CLASSES", "base", ]
+
     cfg = setup_cfg(args)
+
+    # cfg.DATALOADER.N_INS = wandb.config.nins
+    # cfg.DATALOADER.BATCH_SIZE = wandb.config.batchsize
+    # cfg.OPTIM.LR = wandb.config.lr
+    # cfg.OPTIM.MAX_EPOCH = wandb.config.epochs
+    # cfg.DATASET.NUM_SHOTS = 16
+    # cfg.DATASET.SUBSAMPLE_CLASSES = "base"
+
     if cfg.SEED >= 0:
         print("Setting fixed seed: {}".format(cfg.SEED))
         set_random_seed(cfg.SEED)
@@ -177,16 +225,13 @@ def main(args):
 
     trainer = build_trainer(cfg)
 
-    # if args.eval_only:
-    #     trainer.load_model(args.model_dir, epoch=args.load_epoch)
-    #     trainer.test()
-    #     return
+    if args.eval_only:
+        trainer.load_model(args.model_dir, epoch=args.load_epoch)
+        trainer.test()
+        return
 
-    # if not args.no_train:
-    #     trainer.train()
-    trainer.train()
-    cfg.DATASET.SUBSAMPLE_CLASSES = "new"
-    print(trainer.test())
+    if not args.no_train:
+        trainer.train()
 
 
 if __name__ == "__main__":
@@ -243,10 +288,37 @@ if __name__ == "__main__":
         "--visual-weight", type=float, help="weight of visual losses"
     )
     parser.add_argument(
-        "opts",
-        default=None,
-        nargs=argparse.REMAINDER,
-        help="modify config options using the command-line",
+        "--batch-size", type=int, help="batch size"
     )
+    # parser.add_argument(
+    #     "--config-file", type=str, help="config file"
+    # )
+    # parser.add_argument(
+    #     "--dataset-config-file", type=str, help="dataset config file"
+    # )
+    parser.add_argument(
+        "--epochs", type=int, help="epochs"
+    )
+    parser.add_argument(
+        "--lr", type=float, help="lr"
+    )
+    parser.add_argument(
+        "--n-ins", type=int, help="n_ins"
+    )
+    parser.add_argument(
+        "--num-shots", type=int, help="num_shots"
+    )
+    parser.add_argument(
+        "--subsample-classes", type=str, help="subsample_classes"
+    )
+    # parser.add_argument(
+    #     "--output-dir", type=str, help="output base dir"
+    # )
+    # parser.add_argument(
+    #     "opts",
+    #     default=None,
+    #     nargs=argparse.REMAINDER,
+    #     help="modify config options using the command-line",
+    # )
     args = parser.parse_args()
     main(args)
