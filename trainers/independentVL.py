@@ -307,7 +307,8 @@ class IVLP(TrainerX):
         model = self.model
         optim = self.optim
         scaler = self.scaler
-        weight_dict = {'loss_ce': 1, 'loss_text': self.cfg.TRAINER.IVLP.TEXT_WEIGHT, 'loss_visual': self.cfg.TRAINER.IVLP.VISUAL_WEIGHT}
+        # weight_dict = {'loss_ce': 1, 'loss_text': self.cfg.TRAINER.IVLP.TEXT_WEIGHT, 'loss_visual': self.cfg.TRAINER.IVLP.VISUAL_WEIGHT}
+        weight_dict = {'loss_ce': 1, 'loss_visual': self.cfg.TRAINER.IVLP.VISUAL_WEIGHT}
 
         prec = self.cfg.TRAINER.IVLP.PREC
         if prec == "amp":
@@ -324,7 +325,8 @@ class IVLP(TrainerX):
             losses.backward()
             optim.step()
 
-        loss_summary = {"loss_ce": loss_dict['loss_ce'].item(), "loss_text": loss_dict['loss_text'].item(), "loss_visual": loss_dict['loss_visual'].item()}
+        # loss_summary = {"loss_ce": loss_dict['loss_ce'].item(), "loss_text": loss_dict['loss_text'].item(), "loss_visual": loss_dict['loss_visual'].item()}
+        loss_summary = {"loss_ce": loss_dict['loss_ce'].item(), "loss_visual": loss_dict['loss_visual'].item()}
 
         if (self.batch_idx + 1) == self.num_batches:
             self.update_lr()
