@@ -194,11 +194,11 @@ class CustomCLIP(nn.Module):
         self.dtype = clip_model.dtype
         if visual_loss == "multi_similarity_loss":
             self.visual_loss = losses.MultiSimilarityLoss(alpha=2, beta=50, base=0.5)
+            self.miner = miners.MultiSimilarityMiner(epsilon=0.1)
         elif visual_loss == "NTXent_loss":
             self.visual_loss = losses.NTXentLoss(temperature=0.07)
         elif visual_loss == "arc_face_loss":
             self.visual_loss = None
-            self.miner = miners.MultiSimilarityMiner(epsilon=0.1)
         else:
             raise NotImplementedError 
         self.visual_loss_type = visual_loss
