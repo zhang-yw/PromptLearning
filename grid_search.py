@@ -232,9 +232,11 @@ def main(args):
 
     # if not args.no_train:
     #     trainer.train()
-    trainer.train()
+    base_accuracy = trainer.train()
     cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
-    test_accuracy = trainer.test()
+    novel_accuracy = trainer.test()
+    mean_accuracy = 0.5*base_accuracy + 0.5*novel_accuracy
+    wandb.log({"mean_accuracy": mean_accuracy})
     # train_accuracy = 
 
 

@@ -4,18 +4,18 @@ method: random
 name: search
 metric:
   goal: maximize
-  name: test/accuracy
+  name: mean_accuracy
 parameters:
   root: 
     value: "/nobackup3/yiwei/data/"
   seed:
-    value: 1
+    values: [1, 2, 3]
   trainer:
     value: IVLP
   config-file:
     value: "configs/trainers/IVLP/vit_b16_c2_ep10_batch8_4+4ctx.yaml"
   output-dir:
-    value: "/nobackup3/yiwei/wandb/grid_search"
+    value: "/nobackup3/yiwei/wandb/grid_search_loss"
   num-shots:
     value: 16
   subsample-classes:
@@ -38,8 +38,14 @@ parameters:
   n-ins:
     values: [2, 4]
   lr:
-    values: [0.001, 0.002, 0.0035, 0.005]
+    values: [0.001, 0.002, 0.0035, 0.005, 0.01]
   epochs:
-    values: [5, 10]
+    values: [5, 10, 15]
   visual-weight:
-    values: [0.0, 0.1, 0.2, 0.5]
+    values: [0.0, 0.1, 0.25, 0.5, 1.0]
+  visual-loss:
+    distribution: categorical
+    values: 
+    - "multi_similarity_loss"
+    - "multi_similarity_loss_miner"
+    - "NTXent_loss"
