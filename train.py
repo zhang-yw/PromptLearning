@@ -177,18 +177,18 @@ def main(args):
 
     trainer = build_trainer(cfg)
 
-    # if args.eval_only:
-    #     trainer.load_model(args.model_dir, epoch=args.load_epoch)
-    #     trainer.test()
-    #     return
+    if args.eval_only:
+        trainer.load_model(args.model_dir, epoch=args.load_epoch)
+        trainer.test()
+        return
 
-    # if not args.no_train:
-    #     trainer.train()
+    if not args.no_train:
+        print(trainer.train())
     # trainer.train()
-    cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
-    print(cfg.DATASET.SUBSAMPLE_CLASSES)
-    # cfg.DATASET.SUBSAMPLE_CLASSES = "new"
-    print(trainer.test())
+    # cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
+    # print(cfg.DATASET.SUBSAMPLE_CLASSES)
+    # # cfg.DATASET.SUBSAMPLE_CLASSES = "new"
+    # print(trainer.test())
 
 
 if __name__ == "__main__":
