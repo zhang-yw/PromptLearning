@@ -184,8 +184,9 @@ def main(args):
 
     # if not args.no_train:
     #     trainer.train()
-    trainer.train()
-    cfg.DATASET.SUBSAMPLE_CLASSES = "new"
+    # trainer.train()
+    cfg.merge_from_list([DATASET.SUBSAMPLE_CLASSES, "new"])
+    # cfg.DATASET.SUBSAMPLE_CLASSES = "new"
     print(trainer.test())
 
 
