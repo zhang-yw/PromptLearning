@@ -180,6 +180,7 @@ def main(args):
     cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
     print(trainer.test())
     cfg.SEED = cfg.SEED + 1
+    set_random_seed(cfg.SEED)
     trainer = build_trainer(cfg)
     print(trainer.train())
     cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
