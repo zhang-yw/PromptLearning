@@ -194,7 +194,7 @@ def setup_cfg(args):
     # 4. From optional input arguments
     # cfg.merge_from_list(args.opts)
 
-    cfg.freeze()
+    # cfg.freeze()
 
     return cfg
 
@@ -230,6 +230,8 @@ def main(args):
     if cfg.SEED >= 0:
         print("Setting fixed seed: {}".format(cfg.SEED))
         set_random_seed(cfg.SEED)
+    output_dir = cfg.OUTPUT_DIR
+    cfg.OUTPUT_DIR = os.path.join(output_dir, str(cfg.SEED))
     setup_logger(cfg.OUTPUT_DIR)
 
     if torch.cuda.is_available() and cfg.USE_CUDA:
@@ -240,18 +242,31 @@ def main(args):
     print("** System info **\n{}\n".format(collect_env_info()))
 
     trainer = build_trainer(cfg)
+    base_accuracy_1 = trainer.train()
+    cfg.DATASET.SUBSAMPLE_CLASSES = "new"
+    novel_accuracy_1 = trainer.test()
 
-    # if args.eval_only:
-    #     trainer.load_model(args.model_dir, epoch=args.load_epoch)
-    #     trainer.test()
-    #     return
+    cfg.SEED = cfg.SEED + 1
+    set_random_seed(cfg.SEED)
+    cfg.OUTPUT_DIR = os.path.join(output_dir, str(cfg.SEED))
+    cfg.DATASET.SUBSAMPLE_CLASSES = "base"
+    setup_logger(cfg.OUTPUT_DIR)
+    trainer = build_trainer(cfg)
+    base_accuracy_2 = trainer.train()
+    cfg.DATASET.SUBSAMPLE_CLASSES = "new"
+    novel_accuracy_2 = trainer.test()
 
-    # if not args.no_train:
-    #     trainer.train()
-    base_accuracy = trainer.train()
-    cfg.merge_from_list(["DATASET.SUBSAMPLE_CLASSES", "new"])
-    novel_accuracy = trainer.test()
-    mean_accuracy = 0.5*base_accuracy + 0.5*novel_accuracy
+    cfg.SEED = cfg.SEED + 1
+    set_random_seed(cfg.SEED)
+    cfg.OUTPUT_DIR = os.path.join(output_dir, str(cfg.SEED))
+    cfg.DATASET.SUBSAMPLE_CLASSES = "base"
+    setup_logger(cfg.OUTPUT_DIR)
+    trainer = build_trainer(cfg)
+    base_accuracy_3 = trainer.train()
+    cfg.DATASET.SUBSAMPLE_CLASSES = "new"
+    novel_accuracy_3 = trainer.test()
+
+    mean_accuracy = 0.1666 * base_accuracy_1 + 0.1666 * novel_accuracy_1 + 0.1666 * base_accuracy_2 + 0.1666 * novel_accuracy_2 + 0.1666 * base_accuracy_3 + 0.1666 * novel_accuracy_3
     wandb.log({"mean_accuracy": mean_accuracy})
     # train_accuracy = 
 
