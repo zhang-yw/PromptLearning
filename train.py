@@ -126,6 +126,7 @@ def extend_cfg(cfg):
     cfg.TRAINER.IVLP.PROMPT_DEPTH_TEXT = 9  # Max 12, minimum 0, for 0 it will act as shallow MaPLe (J=1)
     cfg.TRAINER.IVLP.TEXT_WEIGHT = 0.0
     cfg.TRAINER.IVLP.VISUAL_WEIGHT = 0.0
+    cfg.TRAINER.IVLP.VISUAL_LOSS = "multi_similarity_loss"
     cfg.DATASET.SUBSAMPLE_CLASSES = "all"  # all, base or new
 
     # Config for only vision side prompting
