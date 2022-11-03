@@ -278,7 +278,7 @@ def main(args):
     novel_accuracy_3 = trainer.test()
 
     mean_accuracy = 0.1666 * base_accuracy_1 + 0.1666 * novel_accuracy_1 + 0.1666 * base_accuracy_2 + 0.1666 * novel_accuracy_2 + 0.1666 * base_accuracy_3 + 0.1666 * novel_accuracy_3
-    wandb.log({"mean_accuracy": mean_accuracy})
+    wandb.log({"mean_accuracy": mean_accuracy, "base_accuracy_1": base_accuracy_1, "novel_accuracy_1": novel_accuracy_1, "base_accuracy_2": base_accuracy_2, "novel_accuracy_2": novel_accuracy_2, "base_accuracy_3": base_accuracy_3, "novel_accuracy_3": novel_accuracy_3})
     # train_accuracy = 
 
 

@@ -15,7 +15,7 @@ parameters:
   config-file:
     value: "configs/trainers/IVLP/vit_b16_c2_ep10_batch8_4+4ctx.yaml"
   output-dir:
-    value: "/nobackup3/yiwei/wandb/grid_search_loss"
+    value: "/nobackup3/yiwei/wandb/grid_search_loss_2"
   num-shots:
     value: 16
   subsample-classes:
@@ -23,26 +23,27 @@ parameters:
   dataset-config-file:
     distribution: categorical
     values: 
-    - "configs/datasets/caltech101.yaml"
+    # - "configs/datasets/caltech101.yaml"
     - "configs/datasets/dtd.yaml"
     - "configs/datasets/eurosat.yaml"
     - "configs/datasets/fgvc_aircraft.yaml"
-    - "configs/datasets/food101.yaml"
-    - "configs/datasets/oxford_flowers.yaml"
+    # - "configs/datasets/food101.yaml"
+    # - "configs/datasets/oxford_flowers.yaml"
     - "configs/datasets/oxford_pets.yaml"
-    - "configs/datasets/stanford_cars.yaml"
+    # - "configs/datasets/stanford_cars.yaml"
     - "configs/datasets/sun397.yaml"
-    - "configs/datasets/ucf101.yaml"
+    # - "configs/datasets/ucf101.yaml"
   batch-size: 
     value: 16
   n-ins:
     values: [2, 4, 8]
   lr:
-    value: 0.0035
+    min: 0.001
+    max: 0.01
   epochs:
-    value: 10
+    value: 15
   visual-weight:
-    values: [0.0, 0.25, 0.5, 1.0]
+    value: 1.0
   visual-loss:
     distribution: categorical
     values: 
@@ -54,6 +55,4 @@ parameters:
   n-ctx-text:
     value: 4
   prompt-depth-vision:
-    values: [9, 12]
-  prompt-depth-vision:
-    values: [1, 9, 12]
+    value: 9
