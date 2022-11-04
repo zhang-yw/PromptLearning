@@ -32,7 +32,7 @@ parameters:
   batch-size: 
     value: 16
   n-ins:
-    value: 2
+    value: 4
   lr:
     min: 0.001
     max: 0.01
@@ -44,8 +44,8 @@ parameters:
     distribution: categorical
     values: 
     - "multi_similarity_loss"
-    - "multi_similarity_loss_miner"
-    - "NTXent_loss"
+    # - "multi_similarity_loss_miner"
+    # - "NTXent_loss"
   n-ctx-vision:
     value: 8
   n-ctx-text:
