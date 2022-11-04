@@ -340,7 +340,7 @@ class IVLP(TrainerX):
                     # Make sure that VPT prompts are updated
                     if "VPT" in name:
                         if "image_encoder" in name:
-                            param.requires_grad_(False)
+                            param.requires_grad_(True)
                         else:
                             param.requires_grad_(True)
                     else:
