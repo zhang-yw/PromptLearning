@@ -24,11 +24,11 @@ parameters:
     distribution: categorical
     values: 
     # - "configs/datasets/dtd.yaml"
-    # - "configs/datasets/eurosat.yaml"
+    - "configs/datasets/eurosat.yaml"
     # - "configs/datasets/fgvc_aircraft.yaml"
     # - "configs/datasets/oxford_pets.yaml"
     # - "configs/datasets/sun397.yaml"
-    - "configs/datasets/food101.yaml"
+    # - "configs/datasets/food101.yaml"
   batch-size: 
     value: 16
   n-ins:
