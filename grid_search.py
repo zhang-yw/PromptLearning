@@ -240,19 +240,22 @@ def main(args):
     output_dir = cfg.OUTPUT_DIR
     output_dir_1 = os.path.join(output_dir, str(cfg.SEED))
     cfg.OUTPUT_DIR = os.path.join(output_dir_1, "base")
+    model_dir_1 = cfg.OUTPUT_DIR
     setup_logger(cfg.OUTPUT_DIR)
     trainer = build_trainer(cfg)
     base_accuracy_1 = trainer.train()
     cfg.DATASET.SUBSAMPLE_CLASSES = "new"
     cfg.OUTPUT_DIR = os.path.join(output_dir_1, "new")
     setup_logger(cfg.OUTPUT_DIR)
-    # trainer = build_trainer(cfg)
+    trainer = build_trainer(cfg)
+    trainer.load_model(model_dir_1, epoch=args.epochs)
     novel_accuracy_1 = trainer.test()
 
     cfg.SEED = cfg.SEED + 1
     set_random_seed(cfg.SEED)
     output_dir_2 = os.path.join(output_dir, str(cfg.SEED))
     cfg.OUTPUT_DIR = os.path.join(output_dir_2, "base")
+    model_dir_2 = cfg.OUTPUT_DIR
     cfg.DATASET.SUBSAMPLE_CLASSES = "base"
     setup_logger(cfg.OUTPUT_DIR)
     trainer = build_trainer(cfg)
@@ -260,13 +263,15 @@ def main(args):
     cfg.DATASET.SUBSAMPLE_CLASSES = "new"
     cfg.OUTPUT_DIR = os.path.join(output_dir_2, "new")
     setup_logger(cfg.OUTPUT_DIR)
-    # trainer = build_trainer(cfg)
+    trainer = build_trainer(cfg)
+    trainer.load_model(model_dir_2, epoch=args.epochs)
     novel_accuracy_2 = trainer.test()
 
     cfg.SEED = cfg.SEED + 1
     set_random_seed(cfg.SEED)
     output_dir_3 = os.path.join(output_dir, str(cfg.SEED))
     cfg.OUTPUT_DIR = os.path.join(output_dir_3, "base")
+    model_dir_3 = cfg.OUTPUT_DIR
     cfg.DATASET.SUBSAMPLE_CLASSES = "base"
     setup_logger(cfg.OUTPUT_DIR)
     trainer = build_trainer(cfg)
@@ -274,7 +279,8 @@ def main(args):
     cfg.DATASET.SUBSAMPLE_CLASSES = "new"
     cfg.OUTPUT_DIR = os.path.join(output_dir_3, "new")
     setup_logger(cfg.OUTPUT_DIR)
-    # trainer = build_trainer(cfg)
+    trainer = build_trainer(cfg)
+    trainer.load_model(model_dir_3, epoch=args.epochs)
     novel_accuracy_3 = trainer.test()
 
     mean_accuracy = 0.1666 * base_accuracy_1 + 0.1666 * novel_accuracy_1 + 0.1666 * base_accuracy_2 + 0.1666 * novel_accuracy_2 + 0.1666 * base_accuracy_3 + 0.1666 * novel_accuracy_3
