@@ -246,7 +246,7 @@ def main(args):
     cfg.DATASET.SUBSAMPLE_CLASSES = "new"
     cfg.OUTPUT_DIR = os.path.join(output_dir_1, "new")
     setup_logger(cfg.OUTPUT_DIR)
-    trainer = build_trainer(cfg)
+    # trainer = build_trainer(cfg)
     novel_accuracy_1 = trainer.test()
 
     cfg.SEED = cfg.SEED + 1
@@ -260,7 +260,7 @@ def main(args):
     cfg.DATASET.SUBSAMPLE_CLASSES = "new"
     cfg.OUTPUT_DIR = os.path.join(output_dir_2, "new")
     setup_logger(cfg.OUTPUT_DIR)
-    trainer = build_trainer(cfg)
+    # trainer = build_trainer(cfg)
     novel_accuracy_2 = trainer.test()
 
     cfg.SEED = cfg.SEED + 1
@@ -274,7 +274,7 @@ def main(args):
     cfg.DATASET.SUBSAMPLE_CLASSES = "new"
     cfg.OUTPUT_DIR = os.path.join(output_dir_3, "new")
     setup_logger(cfg.OUTPUT_DIR)
-    trainer = build_trainer(cfg)
+    # trainer = build_trainer(cfg)
     novel_accuracy_3 = trainer.test()
 
     mean_accuracy = 0.1666 * base_accuracy_1 + 0.1666 * novel_accuracy_1 + 0.1666 * base_accuracy_2 + 0.1666 * novel_accuracy_2 + 0.1666 * base_accuracy_3 + 0.1666 * novel_accuracy_3

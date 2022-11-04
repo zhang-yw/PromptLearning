@@ -9,7 +9,7 @@ parameters:
   root: 
     value: "/nobackup3/yiwei/data/"
   seed:
-    value: 1
+    value: 10
   trainer:
     value: IVLP
   config-file:
@@ -36,7 +36,7 @@ parameters:
   batch-size: 
     value: 16
   n-ins:
-    values: [2, 4, 8]
+    value: 2
   lr:
     min: 0.001
     max: 0.01
@@ -51,7 +51,7 @@ parameters:
     - "multi_similarity_loss_miner"
     - "NTXent_loss"
   n-ctx-vision:
-    values: [4, 8, 32]
+    value: 8
   n-ctx-text:
     value: 4
   prompt-depth-vision:
