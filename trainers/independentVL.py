@@ -331,6 +331,8 @@ class IVLP(TrainerX):
                             param.requires_grad_(False)
                     else:
                         param.requires_grad_(False)
+                else:
+                    param.requires_grad_(False)
         else:
             weight_dict = {'loss_ce': 1, 'loss_visual': 0}
             for name, param in self.model.named_parameters():
@@ -343,6 +345,8 @@ class IVLP(TrainerX):
                             param.requires_grad_(True)
                     else:
                         param.requires_grad_(False)
+                else:
+                    param.requires_grad_(True)
 
         prec = self.cfg.TRAINER.IVLP.PREC
         if prec == "amp":
