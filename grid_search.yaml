@@ -9,7 +9,7 @@ parameters:
   root: 
     value: "/nobackup3/yiwei/data/"
   seed:
-    value: 10
+    value: 20
   trainer:
     value: IVLP
   config-file:
