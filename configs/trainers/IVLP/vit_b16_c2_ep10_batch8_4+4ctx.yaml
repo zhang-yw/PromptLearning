@@ -1,8 +1,9 @@
 # Deep independent V-L Prompting
 DATALOADER:
   TRAIN_X:
-    SAMPLER: "RandomClassSampler"
-    N_INS: 4
+    # SAMPLER: "RandomClassSampler"
+    # N_INS: 4
+    SAMPLER: "RandomSampler"
     BATCH_SIZE: 8
   TEST:
     BATCH_SIZE: 100

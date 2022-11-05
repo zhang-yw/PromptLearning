@@ -319,34 +319,35 @@ class IVLP(TrainerX):
         optim = self.optim
         scaler = self.scaler
         # weight_dict = {'loss_ce': 1, 'loss_text': self.cfg.TRAINER.IVLP.TEXT_WEIGHT, 'loss_visual': self.cfg.TRAINER.IVLP.VISUAL_WEIGHT}
-        if self.epoch <= 10:
-            weight_dict = {'loss_ce': 0, 'loss_visual': self.cfg.TRAINER.IVLP.VISUAL_WEIGHT}
-            for name, param in self.model.named_parameters():
-                if "prompt_learner" not in name:
-                    # Make sure that VPT prompts are updated
-                    if "VPT" in name:
-                        if "image_encoder" in name:
-                            param.requires_grad_(True)
-                        else:
-                            param.requires_grad_(False)
-                    else:
-                        param.requires_grad_(False)
-                else:
-                    param.requires_grad_(False)
-        else:
-            weight_dict = {'loss_ce': 1, 'loss_visual': 0}
-            for name, param in self.model.named_parameters():
-                if "prompt_learner" not in name:
-                    # Make sure that VPT prompts are updated
-                    if "VPT" in name:
-                        if "image_encoder" in name:
-                            param.requires_grad_(True)
-                        else:
-                            param.requires_grad_(True)
-                    else:
-                        param.requires_grad_(False)
-                else:
-                    param.requires_grad_(True)
+        weight_dict = {'loss_ce': 1, 'loss_text': 0, 'loss_visual': 0}
+        # if self.epoch <= 10:
+        #     weight_dict = {'loss_ce': 0, 'loss_visual': self.cfg.TRAINER.IVLP.VISUAL_WEIGHT}
+        #     for name, param in self.model.named_parameters():
+        #         if "prompt_learner" not in name:
+        #             # Make sure that VPT prompts are updated
+        #             if "VPT" in name:
+        #                 if "image_encoder" in name:
+        #                     param.requires_grad_(True)
+        #                 else:
+        #                     param.requires_grad_(False)
+        #             else:
+        #                 param.requires_grad_(False)
+        #         else:
+        #             param.requires_grad_(False)
+        # else:
+        #     weight_dict = {'loss_ce': 1, 'loss_visual': 0}
+        #     for name, param in self.model.named_parameters():
+        #         if "prompt_learner" not in name:
+        #             # Make sure that VPT prompts are updated
+        #             if "VPT" in name:
+        #                 if "image_encoder" in name:
+        #                     param.requires_grad_(True)
+        #                 else:
+        #                     param.requires_grad_(True)
+        #             else:
+        #                 param.requires_grad_(False)
+        #         else:
+        #             param.requires_grad_(True)
 
         prec = self.cfg.TRAINER.IVLP.PREC
         if prec == "amp":
